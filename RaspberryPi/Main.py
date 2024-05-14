@@ -1,18 +1,18 @@
-from Sensor import *
-from buzzer import *
-from button import *
+#Import classes from py source code
+from SensorDection import *
+from OperateBuzzer import *
+from JudgementDoorlockUsed import *
 from RecordCamera import *
 from time import sleep
 
-#GitTest
 if __name__ == '__main__':
-	#Object Declare
+	#Declare objects
 	SensorDetection = SensorDetection()
 	OperateBuzzer = OperateBuzzer()
 	JudegementDoorlockUsed = JudegementDoorlockUsed()
 	RecordCamera = RecordCamera()
 		
-	#Var Declare
+	#Declare vars for Set() each classes
 	detectionReferenceTime = 0
 	isUltrasonicSensorDetected = 0.0
 	isInfraredSensorDetected = False
