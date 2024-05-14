@@ -13,4 +13,3 @@ class OperateBuzzer:
 			buzzer.on()
 		else :
 			buzzer.off()
-		

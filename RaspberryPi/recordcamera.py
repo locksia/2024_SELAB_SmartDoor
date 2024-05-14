@@ -22,4 +22,3 @@ class RecordCamera():
 			picam2.start_recording(encoder, output)
 			time.sleep(10)
 			picam2.stop_recording()
-
