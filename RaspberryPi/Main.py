@@ -1,7 +1,7 @@
 from Sensor import *
 from buzzer import *
 from button import *
-from recordcamera import *
+from RecordCamera import *
 from time import sleep
 
 #GitTest
