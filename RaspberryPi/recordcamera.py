@@ -6,7 +6,7 @@ import time
 picam2 = Picamera2()
 video_config = picam2.create_video_configuration()
 picam2.configure(video_config)
-
+#asd
 class RecordCamera():
 	def __init__(self):
 		self.recordCamera = False
