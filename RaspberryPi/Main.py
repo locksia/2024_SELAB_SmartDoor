@@ -4,7 +4,7 @@ from button import *
 from recordcamera import *
 from time import sleep
 
-#son jeong woo test
+#son jeong woo test22
 if __name__ == '__main__':
 	#Object Declare
 	SensorDetection = SensorDetection()
