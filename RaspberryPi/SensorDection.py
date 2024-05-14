@@ -7,9 +7,10 @@ InfraredSensorDetected = MotionSensor(21)
 
 class SensorDetection():
 	def __init__(self):
-		self.detectionReferenceTime = 0
+		self.detectionReferenceCount = 0
+		self.dectionCount = [0]
 		self.isUltrasonicSensorDetected = False #DoorOpend
-		self.isInfraredSensorDetected = False
+		self.isInfraredSensorDetected = False	#HumanDetected
 		self.isDoorlockUsed = False
 		self.isHumanDetected = False
 		self.isDoorForcedOpend = False
@@ -22,11 +23,19 @@ class SensorDetection():
 	def GetIsfraredSensorDetected(self):
 		return self.isInfraredSensorDetected
 		
-	def SetIsHumandetected(self, isInfraredSensorDetected, detectionReferenceTime):
-		if(isInfraredSensorDetected == True):# Need to add about detcetionReferenceTime
-			self.isHumanDetected = True
+	def SetIsHumandetected(self, isInfraredSensorDetected, detectionReferenceCount):
+		if(isInfraredSensorDetected == True):
+			self.dectionCount.append(1)
 		else:
-			self.isHumanDetected = False
+			self.dectionCount.append(0)
+		
+		if(self.dectionCount.count > 30):#Test Required
+			self.dectionCount.clear()
+		else:
+			if sum(self.dectionCount) > detectionReferenceCount:
+				self.isHumanDetected = True
+			else:
+				self.isHumanDetected = False
 	
 	def GetIsHumandetected(self):
 		return self.isHumanDetected
