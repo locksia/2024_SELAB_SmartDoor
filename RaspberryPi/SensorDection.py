@@ -8,7 +8,7 @@ InfraredSensorDetected = MotionSensor(21)
 class SensorDetection():
 	def __init__(self):
 		self.detectionReferenceCount = 0
-		self.dectionCount = [0]
+		self.detectionCount = [0]
 		self.isUltrasonicSensorDetected = False #DoorOpend
 		self.isInfraredSensorDetected = False	#HumanDetected
 		self.isDoorlockUsed = False
@@ -19,20 +19,29 @@ class SensorDetection():
 	#[small_function] humandetected
 	def SetIsfraredSensorDetected(self):
 		self.isInfraredSensorDetected = InfraredSensorDetected.value
+		if(self.isInfraredSensorDetected == 1):
+			self.isInfraredSensorDetected = True
+		else:
+			self.isInfraredSensorDetected = False
 		
 	def GetIsfraredSensorDetected(self):
 		return self.isInfraredSensorDetected
 		
 	def SetIsHumandetected(self, isInfraredSensorDetected, detectionReferenceCount):
 		if(isInfraredSensorDetected == True):
-			self.dectionCount.append(1)
+			self.detectionCount.append(1)
 		else:
-			self.dectionCount.append(0)
+			self.detectionCount.append(0)
 		
-		if(self.dectionCount.count > 30):#Test Required
-			self.dectionCount.clear()
+		if(len(self.detectionCount) > 10):#Test Required
+			self.detectionCount.clear()
+			if(isInfraredSensorDetected == True):
+				self.detectionCount.append(1)
+			else:
+				self.detectionCount.append(0)
+			
 		else:
-			if sum(self.dectionCount) > detectionReferenceCount:
+			if sum(self.detectionCount) > detectionReferenceCount:
 				self.isHumanDetected = True
 			else:
 				self.isHumanDetected = False
@@ -40,7 +49,7 @@ class SensorDetection():
 	def GetIsHumandetected(self):
 		return self.isHumanDetected
 
-	#[small_function] doorforcedopend
+	#[small_function] ultrasonicsensor
 	def SetIsUltrasonicSensorDetected(self):
 		if(ultraSonic.distance > 0.1) : 
 			self.isUltrasonicSensorDetected = True
@@ -50,6 +59,7 @@ class SensorDetection():
 	def GetIsUltrasonicSensorDetected(self):
 		return self.isUltrasonicSensorDetected
 	
+	#[small_function] doorforcedopened
 	def SetIsDoorForcedOpend(self, isUltrasonicSensorDetected, isDoorlockUsed):
 		if(isUltrasonicSensorDetected == True and isDoorlockUsed == False):
 			self.isDoorForcedOpend = True
@@ -68,3 +78,11 @@ class SensorDetection():
 	
 	def GetIsDoorNormallyOpend(self):
 		return self.isDoorNormallyOpend
+		
+if __name__ == '__main__':
+	SensorDetection = SensorDetection()
+	ultrasonic = True
+	isdoorlock = True
+	SensorDetection.SetIsDoorNormallyOpend(ultrasonic,isdoorlock)
+	a = SensorDetection.GetIsDoorNormallyOpend()
+	print('isdoornormallyopend : ',a)

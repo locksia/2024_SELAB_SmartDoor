@@ -17,7 +17,9 @@ class RecordCamera():
 	def SetRecordCamera(self, isDoorForcedOpend, isHumanDetected):
 		if(isDoorForcedOpend == True or isHumanDetected == True):
 			encoder = H264Encoder(1000000)
-			RecordedTime = time.strftime('%Y.%m.%d - %H:%M:%S') + ".mp4"
+			RecordedTime = time.strftime('%Y_%m_%d-%H:%M:%S') + ".mp4"
+			
+			
 			output = FfmpegOutput(RecordedTime, audio=True)
 
 			picam2.start_recording(encoder, output)
