@@ -6,6 +6,8 @@ from RecordCamera import *
 #from StreamingCamera import *
 from RecordEntryTime import *
 
+#from DB import *
+
 from time import sleep
 
 if __name__ == '__main__':
@@ -18,7 +20,8 @@ if __name__ == '__main__':
 	RecordEntryTime = RecordEntryTime()
 
 	#Declare vars
-	detectionReferenceCount = 5
+	detectionReferenceCount = 3
+	detectedTime = 0 #When door normally opened
 	isUltrasonicSensorDetected = False
 	isInfraredSensorDetected = False
 	isDoorlockUsed = False
@@ -29,7 +32,7 @@ if __name__ == '__main__':
 	#Loop
 	print("--------------------------------------------------")
 	while True:
-		sleep(0.2)
+		sleep(0.3)
 
 		#Sensor Detection
 		SensorDetection.SetIsfraredSensorDetected()
@@ -57,9 +60,10 @@ if __name__ == '__main__':
 
 		#RecordEntryTime
 		RecordEntryTime.SetDetectedTime(isDoorNormallyOpend)
-		detectionReferenceTime = RecordEntryTime.GetDetectedTime()
+		detectedTime = RecordEntryTime.GetDetectedTime()
 	
 		#Send Data To DB
+		
 		
 		
 		print("isInfraredSensorDetected : ",isInfraredSensorDetected)
@@ -72,7 +76,7 @@ if __name__ == '__main__':
 		
 		print("detectionCount : ", SensorDetection.detectionCount)
 		
-		print("detectionReferenceTime : ", RecordEntryTime.GetDetectedTime())
+		print("detectedTime : ", detectedTime)
 			
 		
 
