@@ -1,47 +1,86 @@
-from Sensor import *
-from buzzer import *
-from button import *
-from recordcamera import *
+#Import classes from py source code
+from SensorDection import *
+from OperateBuzzer import *
+from JudgementDoorlockUsed import *
+from RecordCamera import *
+from StreamingCamera import *
+from RecordEntryTime import *
+from DB import *
+
 from time import sleep
 
-#GitTest
 if __name__ == '__main__':
-	#Object Declare
+	#Declare objects
 	SensorDetection = SensorDetection()
 	OperateBuzzer = OperateBuzzer()
 	JudegementDoorlockUsed = JudegementDoorlockUsed()
 	RecordCamera = RecordCamera()
-		
-	#Var Declare
-	detectionReferenceTime = 0
-	isUltrasonicSensorDetected = 0.0
+	RecordEntryTime = RecordEntryTime()
+	SendDataToDB = SendDataToDB()
+
+	#Declare vars
+	detectionReferenceCount = 3
+	detectedTime = 0 #When door normally opened
+	isUltrasonicSensorDetected = False
 	isInfraredSensorDetected = False
 	isDoorlockUsed = False
 	isHumanDetected = False
 	isDoorForcedOpend = False
 	isDoorNormallyOpend = False
 	
-	#~~~
+	#Loop
 	print("--------------------------------------------------")
 	while True:
-		sleep(0.2)
+		sleep(0.3)
+
+		#Sensor Detection
 		SensorDetection.SetIsfraredSensorDetected()
-		SensorDetection.SetIsUltrasonicSensorDetected()
-		JudegementDoorlockUsed.SetIsDoorlockUsed()
+		SensorDetection.SetIsUltrasonicSensorDetected()	#Door Opend
+		JudegementDoorlockUsed.SetIsDoorlockUsed() #Doorlock Button
 		
+		#Assign Sensor Value
 		isInfraredSensorDetected = SensorDetection.GetIsfraredSensorDetected()
 		isUltrasonicSensorDetected = SensorDetection.GetIsUltrasonicSensorDetected()
 		isDoorlockUsed = JudegementDoorlockUsed.GetIsDoorlockUsed()
 		
+		#SensorDetction - IsDoorForcedOpend, IsDoorNomallyOpend, HumanDetected
 		SensorDetection.SetIsDoorForcedOpend(isUltrasonicSensorDetected, isDoorlockUsed)
-		isDoorForcedOpend = SensorDetection.GetIsDoorForcedOpend()
+		isDoorForcedOpend = SensorDetection.GetIsDoorForcedOpend()		
+		SensorDetection.SetIsDoorNormallyOpend(isUltrasonicSensorDetected, isDoorlockUsed)
+		isDoorNormallyOpend = SensorDetection.GetIsDoorNormallyOpend()
+		SensorDetection.SetIsHumandetected(isInfraredSensorDetected, detectionReferenceCount)
+		isHumanDetected = SensorDetection.GetIsHumandetected()
 		
-		
-		print("motion detect : ",isInfraredSensorDetected)
-		print("distance : ",isUltrasonicSensorDetected)
-		print("doorlockused : ", isDoorlockUsed)
+		#OperateBuzzer
 		OperateBuzzer.SetBuzzerDeviceStatus(isDoorForcedOpend)
-		RecordCamera.SetRecordCamera(isDoorForcedOpend)
+		
+		#RecordCamera
+		RecordCamera.SetRecordCamera(isDoorForcedOpend, isHumanDetected)
+		
+		#StreamingCamera
+		StreamingCamera()
+
+		#RecordEntryTime
+		RecordEntryTime.SetDetectedTime(isDoorNormallyOpend)
+		detectedTime = RecordEntryTime.GetDetectedTime()
+		
+		#Send Data To DB
+		SendDataToDB.SetData(isHumanDetected,isDoorForcedOpend,detectedTime)
+		SendDataToDB.SendAlarmDataToDB()
+		SendDataToDB.SendDetetcedTime()		
+		
+		
+		print("isInfraredSensorDetected : ",isInfraredSensorDetected)
+		print("isUltrasonicSensorDetected : ",isUltrasonicSensorDetected)
+		print("isDoorlockUsed : ",isDoorlockUsed)
+		
+		print("isHumanDetected : ",isHumanDetected)
+		print("isDoorForcedOpend : ",isDoorForcedOpend)
+		print("isDoorNormallyOpend : ",isDoorNormallyOpend)
+		
+		print("detectionCount : ", SensorDetection.detectionCount)
+		
+		print("detectedTime : ", detectedTime)
 		
 		print("--------------------------------------------------")
-		sleep(1.0)
+		
