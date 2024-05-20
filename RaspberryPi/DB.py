@@ -4,17 +4,15 @@ db = pymysql.connect(host='220.69.240.117', port=3306, user='SeRas', passwd='sel
 curs = db.cursor()
 
 class SendDataToDB():
-    def __init__():
+    def __init__(self):
         self.isHumanDetected = False
         self.isDoorForcedOpend = False
         self.detectedTime = 0
-        self.mp4Loc = 0
                 
-    def SetData(self, isHumanDetected, isDoorForcedOpend, detectedTime, mp4Loc):
+    def SetData(self, isHumanDetected, isDoorForcedOpend, detectedTime):
         self.isHumanDetected = isHumanDetected
         self.isDoorForcedOpend = isDoorForcedOpend
         self.detectedTime = detectedTime
-        self.mp4Loc = mp4Loc
         
     def SendAlarmDataToDB(self):
         sql = 'INSERT INTO raspi_alarm (isHumanDetected, isDoorForcedOpened) VALUES(%r, %r)'
@@ -27,7 +25,9 @@ class SendDataToDB():
         db.commit()
         
     def SendRecordVieoToDB(self):
-        print("Hello")
+        sql = 'INSERT INTO raspi_recordedvideos (recordedVideo, recordedTime) VALUES(%s, %s)'
+        curs.execute(sql, self.mp4Loc, self.recordedTime)
+        db.commit()
                 
 if __name__ == '__main__':
         sql = 'INSERT INTO raspi_alarm (isHumanDetected, isDoorForcedOpened) VALUES(%s, %s)'

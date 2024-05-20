@@ -3,10 +3,9 @@ from SensorDection import *
 from OperateBuzzer import *
 from JudgementDoorlockUsed import *
 from RecordCamera import *
-#from StreamingCamera import *
+from StreamingCamera import *
 from RecordEntryTime import *
-
-#from DB import *
+from DB import *
 
 from time import sleep
 
@@ -16,8 +15,8 @@ if __name__ == '__main__':
 	OperateBuzzer = OperateBuzzer()
 	JudegementDoorlockUsed = JudegementDoorlockUsed()
 	RecordCamera = RecordCamera()
-	#StreamingCamera = StreamingCamera()
 	RecordEntryTime = RecordEntryTime()
+	SendDataToDB = SendDataToDB()
 
 	#Declare vars
 	detectionReferenceCount = 3
@@ -53,17 +52,22 @@ if __name__ == '__main__':
 		isHumanDetected = SensorDetection.GetIsHumandetected()
 		
 		#OperateBuzzer
-		#OperateBuzzer.SetBuzzerDeviceStatus(isDoorForcedOpend)
+		OperateBuzzer.SetBuzzerDeviceStatus(isDoorForcedOpend)
 		
 		#RecordCamera
 		RecordCamera.SetRecordCamera(isDoorForcedOpend, isHumanDetected)
+		
+		#StreamingCamera
+		StreamingCamera()
 
 		#RecordEntryTime
 		RecordEntryTime.SetDetectedTime(isDoorNormallyOpend)
 		detectedTime = RecordEntryTime.GetDetectedTime()
-	
-		#Send Data To DB
 		
+		#Send Data To DB
+		SendDataToDB.SetData(isHumanDetected,isDoorForcedOpend,detectedTime)
+		SendDataToDB.SendAlarmDataToDB()
+		SendDataToDB.SendDetetcedTime()		
 		
 		
 		print("isInfraredSensorDetected : ",isInfraredSensorDetected)
@@ -77,14 +81,6 @@ if __name__ == '__main__':
 		print("detectionCount : ", SensorDetection.detectionCount)
 		
 		print("detectedTime : ", detectedTime)
-			
-		
-
-		#print("motion detect : ",isInfraredSensorDetected)
-		#print("distance : ",isUltrasonicSensorDetected)
-		#print("doorlockused : ", isDoorlockUsed)
-		#OperateBuzzer.SetBuzzerDeviceStatus(isDoorForcedOpend)
-		#RecordCamera.SetRecordCamera(isDoorForcedOpend)
 		
 		print("--------------------------------------------------")
 		
