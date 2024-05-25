@@ -1,7 +1,7 @@
 <?php
-$server = "192.168.0.41";
-$port = 8000;
-$url = "/stream.mjpg";
+$server = "";
+$port = ;
+$url = "";
 set_time_limit(0); 
 $fp = fsockopen($server, $port, $errno, $errstr, 30);
 if (!$fp) {
