@@ -1,8 +1,8 @@
 <?php
-	$host = 'localhost';
-	$username = 'selab';
-	$password = 'selab';
-	$database = 'smartdoor';
+	$host = '';
+	$username = '';
+	$password = '';
+	$database = '';
 
 	$conn = mysqli_connect($host, $username, $password, $database);
 	
