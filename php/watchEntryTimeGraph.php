@@ -1,7 +1,7 @@
 <?php
     include("dbConn.php");
 
-    // SQL 쿼리 작성 (최근 20개의 레코드를 불러옴)
+    // SQL 쿼리 작성
     $sql = "SELECT id, recordedVideo, recordedTime FROM raspi_recordedvideos ORDER BY recordedTime DESC LIMIT 20";
     $result = $conn->query($sql);
 
