@@ -1,6 +1,6 @@
 import pymysql
 
-db = pymysql.connect(host='220.69.240.117', port=3306, user='SeRas', passwd='selab', db='smartdoor', charset='utf8')
+db = pymysql.connect(host='', port=, user='', passwd='', db='', charset='utf8')
 curs = db.cursor()
 
 class SendDataToDB():
