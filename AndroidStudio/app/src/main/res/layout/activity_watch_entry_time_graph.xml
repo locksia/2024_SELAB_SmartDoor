@@ -6,17 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".WatchEntryTimeGraph">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="84dp"
-        android:text="출입기록 그래프 보기"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.698" />
+
+    <com.github.mikephil.charting.charts.ScatterChart
+        android:id="@+id/entryTimeGraph"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-69dp" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

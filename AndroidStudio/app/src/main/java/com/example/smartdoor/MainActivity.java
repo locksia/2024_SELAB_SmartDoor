@@ -15,11 +15,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Intent serviceIntent = new Intent(this, UserAlarmService.class);
+        startService(serviceIntent);
+
         Button btnWatchRecordedVideo = (Button)findViewById(R.id.buttonWatchRecordedVideo);
         btnWatchRecordedVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = "http://220.69.240.117/smartdoor/raspiRecordedVideos.php";
+                String url = "http://220.69.240.117/smartdoor/watchRecordedVideos.php";
 
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url));
@@ -29,10 +32,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         Button btnWatchStreaming = (Button)findViewById(R.id.buttonWatchStreaming);
-        btnWatchRecordedVideo.setOnClickListener(new View.OnClickListener() {
+        btnWatchStreaming.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = "http://220.69.240.117/smartdoor/index.php";//수정필요
+                String url = "http://220.69.240.117/smartdoor/watchStreaming.php";//수정필요
 
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url));

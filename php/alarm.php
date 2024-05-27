@@ -3,7 +3,7 @@
 include("dbConn.php");
 
 // 쿼리 실행 (entryTime 필드의 데이터 형식이 YYYY.MM.DD - HH:MM:SS 인 것으로 가정)
-$sql = "SELECT entryTime FROM raspi_entrytime";
+$sql = "SELECT * FROM raspi_alarm ORDER BY id DESC";
 $result = mysqli_query($conn, $sql);
 
 // 결과를 배열로 변환
