@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 # Mostly copied from https://picamera.readthedocs.io/en/release-1.13/recipes2.html
 # Run this script, then point a web browser at http:<this-ip-address>:8000
 # Note: needs simplejpeg to be installed (pip3 install simplejpeg).
@@ -11,6 +13,7 @@ from threading import Condition
 from picamera2 import Picamera2
 from picamera2.encoders import JpegEncoder
 from picamera2.outputs import FileOutput
+from libcamera import Transform
 
 PAGE = """\
 <html>
@@ -24,6 +27,7 @@ PAGE = """\
 </html>
 """
 
+
 class StreamingOutput(io.BufferedIOBase):
     def __init__(self):
         self.frame = None
@@ -33,6 +37,7 @@ class StreamingOutput(io.BufferedIOBase):
         with self.condition:
             self.frame = buf
             self.condition.notify_all()
+
 
 class StreamingHandler(server.BaseHTTPRequestHandler):
     def do_GET(self):
@@ -80,19 +85,15 @@ class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
 
 output = StreamingOutput()
 
-def StreamingCamera():
+def StreamingCamera():    
     picam2 = Picamera2(0)
-    picam2.configure(picam2.create_video_configuration(main={"size": (640, 480)}))
+    #picam2.configure(picam2.create_video_configuration(main={"size": (640, 480)}))
+    picam2.configure(picam2.create_video_configuration(main={"size": (640, 480)},transform=Transform(hflip=True, vflip=True)))
     picam2.start_recording(JpegEncoder(), FileOutput(output))
 
     try:
-        address = ('localhost', 8000)
+        address = ('192.168.0.41', 8000)
         server = StreamingServer(address, StreamingHandler)
         server.serve_forever()
     finally:
         picam2.stop_recording()
-            
-
-#if __name__ == '__main__' :
-	#StreamingCamera = StreamingCamera()
-    #StreamingCamera.StreamingCamera()

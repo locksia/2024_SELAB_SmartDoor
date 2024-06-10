@@ -33,7 +33,7 @@ class SensorDetection():
 		else:
 			self.detectionCount.append(0)
 		
-		if(len(self.detectionCount) > 10):#Test Required
+		if(len(self.detectionCount) > 6):#Test Required
 			self.detectionCount.clear()
 			if(isInfraredSensorDetected == True):
 				self.detectionCount.append(1)
@@ -41,8 +41,9 @@ class SensorDetection():
 				self.detectionCount.append(0)
 			
 		else:
-			if sum(self.detectionCount) > detectionReferenceCount:
+			if sum(self.detectionCount) >= detectionReferenceCount:
 				self.isHumanDetected = True
+				self.detectionCount.clear()
 			else:
 				self.isHumanDetected = False
 	
